@@ -1,0 +1,23 @@
+<resources>
+    <string name="app_name">HATS Native</string>
+    <string name="open">Open</string>
+    <string name="close">Close</string>
+
+    <!--  Menu Items  -->
+    <string name="it_home">Home</string>
+    <string name="it_wifi">WiFi Setup</string>
+    <string name="it_dataset">Dataset File</string>
+    <string name="it_about">About</string>
+    <string name="it_settings">Settings</string>
+
+    <!--TODO Remove this later    -->
+    <!--  Fragment Temporary Strings  -->
+    <string name="fr_home">Home Fragment</string>
+    <string name="fr_wifi">WiFi Setup Fragment</string>
+    <string name="fr_dataset">Dataset Fragment</string>
+    <string name="fr_about">About Fragment</string>
+    <string name="fr_settings">Settings Fragment</string>
+
+    <!--TODO: Remove Nav Header String  -->
+    <string name="test_user">Test User</string>
+</resources>
