@@ -4,6 +4,8 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -64,12 +66,21 @@ public class HomeFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_home, container, false);
+        View fragView = inflater.inflate(R.layout.fragment_home, container, false);
+
+        ImageView ivCommandImage = (ImageView) fragView.findViewById(R.id.iv_commandImage);
+        ivCommandImage.setOnClickListener(this::enterCommandHandler);
+
+        return fragView;
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         rippleBackground = (RippleBackground) getView().findViewById(R.id.rippleButton);
         rippleBackground.startRippleAnimation();
+    }
+
+    public void enterCommandHandler(View view) {
+        Toast.makeText(getActivity().getBaseContext(), "Click working fine", Toast.LENGTH_SHORT).show();
     }
 }
