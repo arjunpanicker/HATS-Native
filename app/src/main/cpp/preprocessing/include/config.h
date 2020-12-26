@@ -18,6 +18,8 @@ namespace hats {
 
 		
 		const std::string NEW_DATASET_FILENAME = "../doc/dataset/hats_data.csv";
+
+		const std::string MAP_FILE = "label_ohv.map";
 	}
 
 	// Error strings

@@ -15,7 +15,7 @@ namespace hats {
         ftFasttext->saveVectors("embeddings.vec");
     }
 
-    fasttext::Vector Embedding::getWordEmbedding(std::string word)
+    fasttext::Vector Embedding::getWordEmbedding(const std::string &word)
     {
         fasttext::Vector vec(ftFasttext->getDimension());
 
@@ -24,7 +24,7 @@ namespace hats {
         return vec;
     }
 
-    fasttext::Vector Embedding::getSentenceEmbedding(std::string sentence)
+    fasttext::Vector Embedding::getSentenceEmbedding(const std::string &sentence)
     {
         // Cannot use getSentenceVector() of fasttext as it uses
         // input stream for getting the sentence
@@ -45,8 +45,6 @@ namespace hats {
                 resultVec.addVector(tempVec);
                 count++;
             }
-            std::cout << word << std::endl;
-            std::cout << resultVec << std::endl;
         }
         if (count > 0) {
             resultVec.mul(1.0 / count);

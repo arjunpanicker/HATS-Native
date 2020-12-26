@@ -35,8 +35,5 @@ add_library(ft ${FT_FILES})
 
 target_include_directories(ft
     PUBLIC include
-)
-
-target_include_directories(ft
     INTERFACE ${CMAKE_CURRENT_SOURCE_DIR}
 )

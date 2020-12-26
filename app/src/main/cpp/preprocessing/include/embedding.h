@@ -11,10 +11,20 @@ namespace hats {
             std::shared_ptr<fasttext::FastText> ftFasttext;
             fasttext::Args ftArgs;
 
-            Embedding(std::string filename) {
+            Embedding(const std::string &filename, const int &dims) {
                 ftArgs = fasttext::Args();
                 ftFasttext = std::make_shared<fasttext::FastText>();
                 ftArgs.input = filename;
+                ftArgs.dim = dims;
+            }
+
+            // Load the model from a saved file
+            Embedding(const std::string &filename) {
+                ftArgs = fasttext::Args();
+                ftFasttext = std::make_shared<fasttext::FastText>();
+
+                ftFasttext->loadModel(filename);
+                ftArgs.dim = 50;
             }
             
             ~Embedding() { }
@@ -23,9 +33,9 @@ namespace hats {
             void train();
     
             // Get word embedding
-            fasttext::Vector getWordEmbedding(std::string word);
+            fasttext::Vector getWordEmbedding(const std::string &word);
 
-            fasttext::Vector getSentenceEmbedding(std::string sentence);
+            fasttext::Vector getSentenceEmbedding(const std::string &sentence);
     };
 }
 

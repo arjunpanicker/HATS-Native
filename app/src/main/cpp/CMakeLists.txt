@@ -29,6 +29,7 @@ set(SOURCE_FILES
         preprocessing/src/embedding.cpp
 
         ml/src/nnet.cpp
+        ml/src/ml_utils.cpp
 
         main.cpp
         )
@@ -80,7 +81,7 @@ target_link_libraries( # Specifies the target library.
 
                        # Links the target library to the log library
                        # included in the NDK.
-                       ${log-lib} )
-target_link_libraries (Hats_ML PUBLIC ${CMAKE_THREAD_LIBS_INIT})
+                       ${log-lib} 
+                       PUBLIC ${CMAKE_THREAD_LIBS_INIT} )
 
 set_target_properties(Hats_ML PROPERTIES VERSION ${PROJECT_VERSION})

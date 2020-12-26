@@ -1,5 +1,6 @@
 set(ML_FILES
     src/nnet.cpp
+    src/ml_utils.cpp
 )
 
 set(ML_HEADER_FILES
@@ -11,8 +12,7 @@ add_library(ml ${ML_FILES})
 
 target_include_directories(ml
     PUBLIC include
-)
-
-target_include_directories(ml
     INTERFACE ${CMAKE_CURRENT_SOURCE_DIR}
 )
+
+target_link_libraries(ml PUBLIC preprocessing)

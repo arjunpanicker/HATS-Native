@@ -6,6 +6,9 @@
 
 namespace hats {
 
+    enum NeuronType { INPUT, HIDDEN, OUTPUT };
+    enum TransferFunctionType { TANH, SOFTMAX };
+
     class Connection {
         private:
             double weight;
@@ -28,16 +31,19 @@ namespace hats {
             static double transferFunction(double x);
             static double transferFunctionDerivative(double x);
             double m_outputVal;
+            NeuronType neuronType;
             double m_gradient;
             int32_t m_myIndex;
             std::vector<Connection> m_outputWeights;
             double sumDOW(const Layer &nextLayer) const;
 
         public:
-            Neuron(int32_t numOutputs, int32_t myIndex);
+            Neuron(int32_t numOutputs, int32_t myIndex, NeuronType nType);
             void setOutputVal(double val) { m_outputVal = val; }
             double getOutputVal() const { return m_outputVal; }
-            void feedForward(const Layer &prevLayer);
+            void setNeuronType(NeuronType ntype) { neuronType = ntype; }
+            NeuronType getNeuronType() { return neuronType; }
+            void feedForward(const Layer &prevLayer, const bool &isOutputLayer);
             void calcOutputGradients(double targetVal);
             void calcHiddenGradients(const Layer &nextLayer);
             void updateInputWeights(Layer &prevLayer);
@@ -49,12 +55,14 @@ namespace hats {
             double m_error;
             double m_recentAverageError;
             double m_recentAverageSmoothingFactor = 100.0;
+            static void ouputLayerSoftmaxFunction(Layer &outputLayer);
 
         public:
-            Net(const std::vector<unsigned> &topology);
-            void feedForward(const std::vector<double> &inputVals);
-            void backProp(const std::vector<double> &targetVals);
+            Net(const std::vector<int> &topology);
+            void feedForward(const hats::FasttextVector &inputVals);
+            void backProp(const std::vector<int> &targetVals);
             void getResults(std::vector<double> &resultVals) const;
+            void getWeights(std::vector<double> &weightVals) const;
     };
 
 }

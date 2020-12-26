@@ -6,8 +6,8 @@
 #include <regex>
 
 #include "pre_utils.h"
-#include "config.h"
 #include "preprocessing.h"
+#include "config.h"
 #include "datasethandler.h"
 
 namespace hats {
@@ -112,7 +112,7 @@ namespace hats {
 		for (int i = 0; i < stopwordsList.size(); i++) {
 			std::size_t foundPos = value.find(stopwordsList.at(i));
 
-			while (foundPos != std::string::npos) {
+			while (!(foundPos == std::string::npos)) {
 				value.erase(foundPos, stopwordsList.at(i).length());
 
 				foundPos = value.find(stopwordsList.at(i));
@@ -159,7 +159,7 @@ namespace hats {
 			for (int i = 0; i < colValues.size(); i++) {
 				std::size_t foundPos = findSubstringPosition(value, colValues.at(i));
 
-				while (foundPos != std::string::npos) {
+				while (!(foundPos == std::string::npos)) {
 					value.replace(foundPos, colValues.at(i).length(), lemmaWord);
 
 					foundPos = findSubstringPosition(value, colValues.at(i));
