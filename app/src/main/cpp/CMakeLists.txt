@@ -81,7 +81,7 @@ target_link_libraries( # Specifies the target library.
 
                        # Links the target library to the log library
                        # included in the NDK.
-                       ${log-lib} 
+                       PUBLIC ${log-lib}
                        PUBLIC ${CMAKE_THREAD_LIBS_INIT} )
 
 set_target_properties(Hats_ML PROPERTIES VERSION ${PROJECT_VERSION})
