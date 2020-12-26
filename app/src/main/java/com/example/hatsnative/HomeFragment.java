@@ -13,12 +13,7 @@ import androidx.fragment.app.Fragment;
 
 import com.skyfishjy.library.RippleBackground;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link com.example.hatsnative.HomeFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
-public class HomeFragment extends Fragment {
+public class HomeFragment extends Fragment implements CommandDialog.CommandDialogListener {
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -27,39 +22,14 @@ public class HomeFragment extends Fragment {
 
     private RippleBackground rippleBackground;
 
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
 
     public HomeFragment() {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment HomeFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static com.example.hatsnative.HomeFragment newInstance(String param1, String param2) {
-        com.example.hatsnative.HomeFragment fragment = new com.example.hatsnative.HomeFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
     }
 
     @Override
@@ -68,7 +38,7 @@ public class HomeFragment extends Fragment {
         // Inflate the layout for this fragment
         View fragView = inflater.inflate(R.layout.fragment_home, container, false);
 
-        ImageView ivCommandImage = (ImageView) fragView.findViewById(R.id.iv_commandImage);
+        ImageView ivCommandImage = fragView.findViewById(R.id.iv_commandImage);
         ivCommandImage.setOnClickListener(this::enterCommandHandler);
 
         return fragView;
@@ -76,11 +46,19 @@ public class HomeFragment extends Fragment {
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        rippleBackground = (RippleBackground) getView().findViewById(R.id.rippleButton);
+        rippleBackground = getView().findViewById(R.id.rippleButton);
         rippleBackground.startRippleAnimation();
     }
 
     public void enterCommandHandler(View view) {
-        Toast.makeText(getActivity().getBaseContext(), "Click working fine", Toast.LENGTH_SHORT).show();
+        CommandDialog commandDialog = new CommandDialog();
+        commandDialog.setTargetFragment(HomeFragment.this, 300);
+        commandDialog.show(getFragmentManager(), "command dialog");
+    }
+
+    @Override
+    public void applyText(String command) {
+        // TODO: Get the command here and complete the function
+        Toast.makeText(getActivity(), command, Toast.LENGTH_SHORT).show();
     }
 }
