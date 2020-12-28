@@ -16,6 +16,8 @@
         <item name="android:listDivider">@android:color/transparent</item>
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
+        <item name="android:windowTranslucentStatus">true</item>
+        <item name="colorOnSurface">@android:color/background_dark</item>
     </style>
 
     <style name="Theme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />

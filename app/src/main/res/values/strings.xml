@@ -2,6 +2,7 @@
     <string name="app_name">HATS Native</string>
     <string name="open">Open</string>
     <string name="close">Close</string>
+    <string name="iv_command">Enter Command</string>
 
     <!--  Menu Items  -->
     <string name="it_home">Home</string>
@@ -16,8 +17,10 @@
     <string name="fr_wifi">WiFi Setup Fragment</string>
     <string name="fr_dataset">Dataset Fragment</string>
     <string name="fr_about">About Fragment</string>
-    <string name="fr_settings">Settings Fragment</string>
 
     <!--TODO: Remove Nav Header String  -->
     <string name="test_user">Test User</string>
+
+    <!--  Settings Fragment String Values  -->
+    <string name="theme_switch">Dark Mode</string>
 </resources>
