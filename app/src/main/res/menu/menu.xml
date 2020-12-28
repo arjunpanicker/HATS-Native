@@ -1,5 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/theme_switch"
+        android:icon="@drawable/ic_wifi_24"
+        android:title="@string/fr_wifi"
+        app:showAsAction="always"/>
+
     <group android:checkableBehavior="single">
         <item
             android:title="@string/it_home"

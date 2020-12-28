@@ -13,9 +13,11 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatDialogFragment;
 
+import com.google.android.material.textfield.TextInputLayout;
+
 public class CommandDialog extends AppCompatDialogFragment {
 
-    private EditText editTextCommand;
+    private TextInputLayout editTextCommand;
     private CommandDialogListener listener;
 
     @NonNull
@@ -39,7 +41,7 @@ public class CommandDialog extends AppCompatDialogFragment {
                 .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        String command = editTextCommand.getText().toString();
+                        String command = editTextCommand.getEditText().getText().toString();
 
                         listener.applyText(command);
                     }
