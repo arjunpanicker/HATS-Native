@@ -7,9 +7,15 @@
     tools:context=".SettingsFragment">
 
     <!-- TODO: Update blank fragment layout -->
-    <TextView
+
+    <com.google.android.material.switchmaterial.SwitchMaterial
+        android:id="@+id/sw_themeSwitch"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/fr_settings" />
+        android:layout_height="wrap_content"
+        android:paddingTop="10dp"
+        android:textSize="18sp"
+        android:text="@string/theme_switch"
+        android:paddingRight="10dp"
+        android:paddingLeft="10dp"/>
 
 </FrameLayout>

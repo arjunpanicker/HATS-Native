@@ -2,6 +2,7 @@ package com.example.hatsnative;
 
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
@@ -9,9 +10,9 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.MenuItem;
-import android.widget.TextView;
 
 import com.google.android.material.navigation.NavigationView;
 
@@ -19,7 +20,7 @@ public class MainActivity extends AppCompatActivity {
 
     // Used to load the 'native-lib' library on application startup.
     static {
-        System.loadLibrary("native-lib");
+        System.loadLibrary("Hats_ML");
     }
 
     DrawerLayout drawerLayout;
@@ -27,16 +28,17 @@ public class MainActivity extends AppCompatActivity {
     Toolbar toolbar;
     NavigationView navigationView;
 
-    // Used to load "native-lib" library on startup
-    static {
-        System.loadLibrary("native-lib");
-    }
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_main);
 
+        setupNavigationView();
+
+    }
+
+    private void setupNavigationView() {
         drawerLayout = findViewById(R.id.drawer);
         toolbar = findViewById(R.id.toolBar);
         setSupportActionBar(toolbar);
@@ -80,9 +82,5 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    /**
-     * A native method that is implemented by the 'native-lib' native library,
-     * which is packaged with this application.
-     */
-    public native String stringFromJNI();
+
 }
