@@ -5,7 +5,7 @@
 #include "preprocessing.h"
 
 extern "C" JNIEXPORT jstring JNICALL
-Java_com_example_hatsnative_DatasetFragment_lowercaseStringTest(JNIEnv* env, jobject) {
+Java_com_example_hatsnative_fragments_DatasetFragment_lowercaseStringTest(JNIEnv* env, jobject) {
     std::string str = "Hi, this is a TEST MessaGe..!!";
 
     hats::Preprocessing preprocessing;

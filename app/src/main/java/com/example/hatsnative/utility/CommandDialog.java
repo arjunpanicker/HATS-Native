@@ -1,4 +1,4 @@
-package com.example.hatsnative;
+package com.example.hatsnative.utility;
 
 import android.app.Dialog;
 import android.content.Context;
@@ -13,6 +13,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatDialogFragment;
 
+import com.example.hatsnative.R;
 import com.google.android.material.textfield.TextInputLayout;
 
 public class CommandDialog extends AppCompatDialogFragment {

@@ -2,7 +2,6 @@ package com.example.hatsnative;
 
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.app.AppCompatDelegate;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
@@ -10,10 +9,14 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.MenuItem;
 
+import com.example.hatsnative.fragments.AboutFragment;
+import com.example.hatsnative.fragments.DatasetFragment;
+import com.example.hatsnative.fragments.HomeFragment;
+import com.example.hatsnative.fragments.SettingsFragment;
+import com.example.hatsnative.fragments.WifiSetupFragment;
 import com.google.android.material.navigation.NavigationView;
 
 public class MainActivity extends AppCompatActivity {
