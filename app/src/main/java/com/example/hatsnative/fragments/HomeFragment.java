@@ -1,5 +1,6 @@
 package com.example.hatsnative.fragments;
 
+import android.content.res.AssetManager;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,18 +12,17 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-import com.example.hatsnative.utility.CommandDialog;
+import com.example.hatsnative.helpers.CommandDialog;
 import com.example.hatsnative.R;
 import com.skyfishjy.library.RippleBackground;
 
+import java.io.IOException;
+
 public class HomeFragment extends Fragment implements CommandDialog.CommandDialogListener {
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
     private RippleBackground rippleBackground;
+
+    private AssetManager assetManager;
 
 
     public HomeFragment() {
@@ -32,6 +32,8 @@ public class HomeFragment extends Fragment implements CommandDialog.CommandDialo
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        assetManager = getResources().getAssets();
     }
 
     @Override
@@ -62,5 +64,15 @@ public class HomeFragment extends Fragment implements CommandDialog.CommandDialo
     public void applyText(String command) {
         // TODO: Get the command here and complete the function
         Toast.makeText(getActivity(), command, Toast.LENGTH_SHORT).show();
+        predict(command);
     }
+
+    private void predict(String command) {
+//        assetManager.openFd("stop_words.txt").getFileDescriptor();
+        String str = predictNative(command, assetManager);
+        Toast.makeText(getActivity(), str, Toast.LENGTH_SHORT).show();
+    }
+
+    // Native Method declarations
+    private native String predictNative(String command, AssetManager assetManager);
 }
