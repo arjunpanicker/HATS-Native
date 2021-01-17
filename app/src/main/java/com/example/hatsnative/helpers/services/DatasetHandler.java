@@ -4,19 +4,22 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
-import java.util.List;
 
 public class DatasetHandler {
 
-    public static List readCsv(InputStream inputStream) {
-        List resultList = new ArrayList();
-        BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
+    public static ArrayList<String> readCsv(InputStream inputStream) {
+        StringBuilder sb = new StringBuilder();
+        InputStreamReader inputStreamReader = new InputStreamReader(inputStream, StandardCharsets.UTF_8);
+        BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
+        ArrayList<String> csvData = new ArrayList<>();
         try {
             String csvLine;
             while ((csvLine = bufferedReader.readLine()) != null) {
-                String[] row = csvLine.split(";");
-                resultList.add(row);
+                sb.append(csvLine);
+                sb.append("\n");
+                csvData.add(csvLine);
             }
         } catch (IOException ex) {
             throw new RuntimeException("Error in reading csv: " + ex);
@@ -27,8 +30,12 @@ public class DatasetHandler {
                 throw new RuntimeException("Error while closing csv: " + e);
             }
         }
+        String result = sb.toString();
+        return csvData;
+    }
 
-        return resultList;
+    public static void writeTempCsv(String content) {
+        // TODO: Complete this code
     }
 
 }

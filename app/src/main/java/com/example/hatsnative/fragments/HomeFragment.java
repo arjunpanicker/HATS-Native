@@ -12,17 +12,21 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-import com.example.hatsnative.helpers.CommandDialog;
 import com.example.hatsnative.R;
+import com.example.hatsnative.helpers.CommandDialog;
+import com.example.hatsnative.helpers.services.DatasetHandler;
+import com.example.hatsnative.helpers.services.FasttextHandler;
 import com.skyfishjy.library.RippleBackground;
 
 import java.io.IOException;
+import java.io.InputStream;
+import java.util.ArrayList;
 
 public class HomeFragment extends Fragment implements CommandDialog.CommandDialogListener {
 
     private RippleBackground rippleBackground;
-
     private AssetManager assetManager;
+    private final String fasttextModelFileName = "ft_model.ftz";
 
 
     public HomeFragment() {
@@ -32,8 +36,6 @@ public class HomeFragment extends Fragment implements CommandDialog.CommandDialo
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        assetManager = getResources().getAssets();
     }
 
     @Override
@@ -62,17 +64,31 @@ public class HomeFragment extends Fragment implements CommandDialog.CommandDialo
 
     @Override
     public void applyText(String command) {
-        // TODO: Get the command here and complete the function
-        Toast.makeText(getActivity(), command, Toast.LENGTH_SHORT).show();
-        predict(command);
+        assetManager = getActivity().getAssets();
+        
+        try {
+            InputStream inputStream = assetManager.open(fasttextModelFileName);
+            String prediction = FasttextHandler.getPrediction(inputStream, command);
+            Toast.makeText(getActivity(), prediction, Toast.LENGTH_LONG).show();
+        } catch (IOException ioException) {
+            ioException.printStackTrace();
+        }
+//        predict(command);
+//        predictClass(command);
+    }
+
+    private void predictClass(String command) {
+        InputStream is = getResources().openRawResource(R.raw.home_auto_dataset);
+        ArrayList<String> csvResult = DatasetHandler.readCsv(is);
+        loadCsvData(csvResult);
     }
 
     private void predict(String command) {
-//        assetManager.openFd("stop_words.txt").getFileDescriptor();
         String str = predictNative(command, assetManager);
         Toast.makeText(getActivity(), str, Toast.LENGTH_SHORT).show();
     }
 
     // Native Method declarations
     private native String predictNative(String command, AssetManager assetManager);
+    private native void loadCsvData(ArrayList<String> csvData);
 }
