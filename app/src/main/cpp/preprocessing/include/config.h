@@ -11,13 +11,13 @@ namespace hats {
 
 	// The location must be relative to the location of the out file (while testing)
 	namespace files {
-		const std::string SOURCE_DATASET_FILENAME = "../doc/dataset/home_auto_dataset.csv";
-		const std::string SMS_TRANSLATION_FILENAME = "../doc/dataset/translations_data/sms_translations.csv";
-		const std::string MULTILINGUAL_TRANSLATION_FILENAME = "../doc/dataset/translations_data/translations_data.csv";
-		const std::string STOPWORDS_FILENAME = "../doc/dataset/preprocessing_data/stop_words.txt";
+		const std::string SOURCE_DATASET_FILENAME = "home_auto_dataset.csv";
+		const std::string SMS_TRANSLATION_FILENAME = "/sms_translations.csv";
+		const std::string MULTILINGUAL_TRANSLATION_FILENAME = "/translations_data.csv";
+		const std::string STOPWORDS_FILENAME = "stop_words.txt";
 
 		
-		const std::string NEW_DATASET_FILENAME = "../doc/dataset/hats_data.csv";
+		const std::string NEW_DATASET_FILENAME = "/hats_data.csv";
 
 		const std::string MAP_FILE = "label_ohv.map";
 	}
