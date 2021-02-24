@@ -13,7 +13,6 @@ public class FasttextHandler {
 
     public static String getPrediction(InputStream inputStream, String command) {
         FastTextPrediction label = null;
-        Log.i(LOG_TAG, "Loading fasttext model to convert");
 
         try {
             FastText model = FastText.loadModel(inputStream);
@@ -36,8 +35,19 @@ public class FasttextHandler {
                 return "geyser on";
             case "__label__geyser_off":
                 return "geyser off";
+            case "__label__ac_on":
+                return "ac on";
+            case "__label__ac_off":
+                return "ac off";
+            case "__label__tv_on":
+                return "tv on";
+            case "__label__tv_off":
+                return "tv off";
+            case "__label__fan_on":
+                return "fan on";
+            case "__label__fan_off":
             default:
-                return "None";
+                return "Other";
         }
     }
 }

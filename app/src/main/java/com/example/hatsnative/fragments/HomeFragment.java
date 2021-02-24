@@ -2,6 +2,7 @@ package com.example.hatsnative.fragments;
 
 import android.content.res.AssetManager;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -65,10 +66,10 @@ public class HomeFragment extends Fragment implements CommandDialog.CommandDialo
     @Override
     public void applyText(String command) {
         assetManager = getActivity().getAssets();
-        
         try {
             InputStream inputStream = assetManager.open(fasttextModelFileName);
             String prediction = FasttextHandler.getPrediction(inputStream, command);
+            Log.i("Personal", prediction);
             Toast.makeText(getActivity(), prediction, Toast.LENGTH_LONG).show();
         } catch (IOException ioException) {
             ioException.printStackTrace();
