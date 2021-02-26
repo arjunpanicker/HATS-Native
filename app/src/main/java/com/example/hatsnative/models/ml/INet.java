@@ -1,4 +1,4 @@
-package com.example.hatsnative.models;
+package com.example.hatsnative.models.ml;
 
 import com.example.hatsnative.helpers.services.ml.Neuron;
 

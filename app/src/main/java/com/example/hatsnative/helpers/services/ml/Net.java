@@ -1,6 +1,7 @@
 package com.example.hatsnative.helpers.services.ml;
 
-import com.example.hatsnative.models.INet;
+import com.example.hatsnative.models.ml.ENeuronType;
+import com.example.hatsnative.models.ml.INet;
 
 import java.util.Vector;
 
@@ -9,6 +10,33 @@ public class Net implements INet {
     double m_error;
     double m_recentAverageError;
     double m_recentAverageSmoothingFactor = 100.0;
+
+    public Net(Vector<Integer> topology) {
+        int numLayers = topology.size();
+
+        for(int layerNum = 0; layerNum < numLayers; ++layerNum) {
+            m_layers.add(new Vector<Neuron>());
+            int numOutputs = layerNum == numLayers - 1 ? 0 : topology.get(layerNum + 1);
+
+            ENeuronType nType;
+            if (layerNum == 0) {
+                nType = ENeuronType.INPUT;
+            } else if (layerNum == numLayers - 1) {
+                nType = ENeuronType.OUTPUT;
+            } else {
+                nType = ENeuronType.HIDDEN;
+            }
+
+            // We have made a new Layer. Now, we need to add neurons to the layer.
+            // We also need to add the bias neuron to each layer
+            for (int neuronNum = 0; neuronNum <= topology.get(layerNum); ++neuronNum) {
+                m_layers.lastElement().add(new Neuron(numOutputs, neuronNum, nType));
+            }
+
+            // Force the bias node's output value to 1.0. It's the last neuron created above
+            m_layers.lastElement().lastElement().setOutputVal(1.0);
+        }
+    }
 
     @Override
     public void feedForward(Vector<Double> inputVals) {
@@ -33,10 +61,10 @@ public class Net implements INet {
 
     @Override
     public void backProp(Vector<Integer> targetVals) {
-        if (targetVals.size() != m_layers.get(m_layers.size() - 1).size() - 1) return;
+        if (targetVals.size() != m_layers.lastElement().size() - 1) return;
 
         // Calculate overall net error (RMS of output errors)
-        Vector<Neuron> outputLayer = m_layers.get(m_layers.size() - 1);
+        Vector<Neuron> outputLayer = m_layers.lastElement();
         m_error = 0.0;
 
         for (int n = 0; n < outputLayer.size() - 1; ++n) {
@@ -85,8 +113,8 @@ public class Net implements INet {
     public Vector<Double> getResults(Vector<Double> resultVals) {
         resultVals.clear();
 
-        for (int n = 0; n < m_layers.get(m_layers.size() - 1).size() - 1; ++n) {
-            resultVals.add(m_layers.get(m_layers.size() - 1).get(n).getOutputVal());
+        for (int n = 0; n < m_layers.lastElement().size() - 1; ++n) {
+            resultVals.add(m_layers.lastElement().get(n).getOutputVal());
         }
 
         return resultVals;

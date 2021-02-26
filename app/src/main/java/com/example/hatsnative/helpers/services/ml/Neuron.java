@@ -1,7 +1,7 @@
 package com.example.hatsnative.helpers.services.ml;
 
-import com.example.hatsnative.models.ENeuronType;
-import com.example.hatsnative.models.INeuron;
+import com.example.hatsnative.models.ml.ENeuronType;
+import com.example.hatsnative.models.ml.INeuron;
 
 import java.util.Vector;
 

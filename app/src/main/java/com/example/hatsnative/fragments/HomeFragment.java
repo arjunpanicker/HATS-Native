@@ -1,5 +1,6 @@
 package com.example.hatsnative.fragments;
 
+import android.content.DialogInterface;
 import android.content.res.AssetManager;
 import android.os.Bundle;
 import android.util.Log;
@@ -11,12 +12,14 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 
 import com.example.hatsnative.R;
 import com.example.hatsnative.helpers.CommandDialog;
 import com.example.hatsnative.helpers.services.DatasetHandler;
 import com.example.hatsnative.helpers.services.FasttextHandler;
+import com.example.hatsnative.helpers.services.PreprocessingHandler;
 import com.skyfishjy.library.RippleBackground;
 
 import java.io.IOException;
@@ -28,6 +31,8 @@ public class HomeFragment extends Fragment implements CommandDialog.CommandDialo
     private RippleBackground rippleBackground;
     private AssetManager assetManager;
     private final String fasttextModelFileName = "ft_model.ftz";
+    private final String stopwordsFilename = "stop_words.txt";
+    private final String shorttextFilename = "sms_translations.csv";
 
 
     public HomeFragment() {
@@ -67,10 +72,24 @@ public class HomeFragment extends Fragment implements CommandDialog.CommandDialo
     public void applyText(String command) {
         assetManager = getActivity().getAssets();
         try {
-            InputStream inputStream = assetManager.open(fasttextModelFileName);
-            String prediction = FasttextHandler.getPrediction(inputStream, command);
-            Log.i("Personal", prediction);
-            Toast.makeText(getActivity(), prediction, Toast.LENGTH_LONG).show();
+            InputStream ft_inputstream = assetManager.open(fasttextModelFileName);
+            InputStream stopwords_inputstream = assetManager.open(stopwordsFilename);
+            InputStream shorttext_inputstream = assetManager.open(shorttextFilename);
+
+            PreprocessingHandler preprocessingHandler =
+                    new PreprocessingHandler(stopwords_inputstream, shorttext_inputstream);
+            String preprocessedCommand = preprocessingHandler.pipeline(command);
+            String prediction = FasttextHandler.getPrediction(ft_inputstream, preprocessedCommand);
+            
+            new AlertDialog.Builder(getActivity())
+                    .setTitle("Prediction Result")
+                    .setMessage("Predicted: " + prediction)
+                    .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            Log.d("Personal", "Prediction displayed!!");
+                        }
+                    }).show();
+            
         } catch (IOException ioException) {
             ioException.printStackTrace();
         }

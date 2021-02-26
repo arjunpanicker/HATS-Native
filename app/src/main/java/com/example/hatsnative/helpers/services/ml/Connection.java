@@ -1,7 +1,7 @@
 package com.example.hatsnative.helpers.services.ml;
 
-import com.example.hatsnative.models.EKernelWeightInitializer;
-import com.example.hatsnative.models.IConnection;
+import com.example.hatsnative.models.ml.EKernelWeightInitializer;
+import com.example.hatsnative.models.ml.IConnection;
 
 public class Connection implements IConnection {
     private double weight;
