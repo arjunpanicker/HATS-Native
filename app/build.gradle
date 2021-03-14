@@ -52,7 +52,7 @@ dependencies {
     implementation project(':log4j-1.2.17')
     implementation project(':guava-19.0')
     implementation project(':commons-cli-1.4')
-    implementation project( ':fasttext4j-0.2.1-SNAPSHOT')
+    implementation project(':fasttext4j-0.2.2')
     testImplementation 'junit:junit:4.+'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'

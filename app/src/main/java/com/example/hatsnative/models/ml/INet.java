@@ -1,6 +1,6 @@
 package com.example.hatsnative.models.ml;
 
-import com.example.hatsnative.helpers.services.ml.Neuron;
+import com.example.hatsnative.helpers.services.ml.net.Neuron;
 
 import java.util.Vector;
 

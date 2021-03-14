@@ -1,4 +1,4 @@
-package com.example.hatsnative.helpers.services.ml;
+package com.example.hatsnative.helpers.services.ml.net;
 
 import java.util.Vector;
 

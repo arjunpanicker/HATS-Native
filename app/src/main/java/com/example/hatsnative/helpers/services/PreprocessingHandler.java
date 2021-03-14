@@ -21,7 +21,7 @@ public class PreprocessingHandler implements IPreprocessing {
 
     private static void getData() {
         stopWords = DatasetHandler.readTextFile(stopwords_inputstream);
-        shorttextData = DatasetHandler.readShortTextCSV(shorttext_inputstream);
+        shorttextData = DatasetHandler.readCSV(shorttext_inputstream);
     }
 
     public PreprocessingHandler() {}

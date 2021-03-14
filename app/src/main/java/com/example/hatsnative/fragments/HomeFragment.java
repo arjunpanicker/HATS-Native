@@ -18,13 +18,17 @@ import androidx.fragment.app.Fragment;
 import com.example.hatsnative.R;
 import com.example.hatsnative.helpers.CommandDialog;
 import com.example.hatsnative.helpers.services.DatasetHandler;
-import com.example.hatsnative.helpers.services.FasttextHandler;
+import com.example.hatsnative.helpers.services.Utility;
+import com.example.hatsnative.helpers.services.ml.FasttextHandler;
 import com.example.hatsnative.helpers.services.PreprocessingHandler;
 import com.skyfishjy.library.RippleBackground;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Vector;
 
 public class HomeFragment extends Fragment implements CommandDialog.CommandDialogListener {
 
@@ -33,6 +37,7 @@ public class HomeFragment extends Fragment implements CommandDialog.CommandDialo
     private final String fasttextModelFileName = "ft_model.ftz";
     private final String stopwordsFilename = "stop_words.txt";
     private final String shorttextFilename = "sms_translations.csv";
+    private final String homeAutoDatasetFilename = "home_auto_dataset.csv";
 
 
     public HomeFragment() {
@@ -75,11 +80,19 @@ public class HomeFragment extends Fragment implements CommandDialog.CommandDialo
             InputStream ft_inputstream = assetManager.open(fasttextModelFileName);
             InputStream stopwords_inputstream = assetManager.open(stopwordsFilename);
             InputStream shorttext_inputstream = assetManager.open(shorttextFilename);
+            InputStream homedata_inputstream = assetManager.open(homeAutoDatasetFilename);
+
+            HashMap<String, Vector<String>> dataset = DatasetHandler.readCSV(homedata_inputstream);
+            Vector<Vector<Integer>> y =  Utility.OneHotEncoder(dataset.get("label"));
 
             PreprocessingHandler preprocessingHandler =
                     new PreprocessingHandler(stopwords_inputstream, shorttext_inputstream);
             String preprocessedCommand = preprocessingHandler.pipeline(command);
-            String prediction = FasttextHandler.getPrediction(ft_inputstream, preprocessedCommand);
+
+            FasttextHandler fasttextHandler = FasttextHandler.getInstance(ft_inputstream);
+            String prediction = fasttextHandler.getPrediction(preprocessedCommand);
+
+            List<fasttext.Vector> sentVectors = fasttextHandler.getSentenceVector(dataset.get("commands"));
             
             new AlertDialog.Builder(getActivity())
                     .setTitle("Prediction Result")
@@ -98,9 +111,9 @@ public class HomeFragment extends Fragment implements CommandDialog.CommandDialo
     }
 
     private void predictClass(String command) {
-        InputStream is = getResources().openRawResource(R.raw.home_auto_dataset);
-        ArrayList<String> csvResult = DatasetHandler.readCsv(is);
-        loadCsvData(csvResult);
+//        InputStream is = getResources().openRawResource(R.raw.home_auto_dataset);
+//        ArrayList<String> csvResult = DatasetHandler.readCsv(is);
+//        loadCsvData(csvResult);
     }
 
     private void predict(String command) {

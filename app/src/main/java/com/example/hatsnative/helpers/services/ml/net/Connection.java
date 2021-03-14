@@ -1,4 +1,4 @@
-package com.example.hatsnative.helpers.services.ml;
+package com.example.hatsnative.helpers.services.ml.net;
 
 import com.example.hatsnative.models.ml.EKernelWeightInitializer;
 import com.example.hatsnative.models.ml.IConnection;

@@ -11,30 +11,28 @@ import java.util.Vector;
 
 public class DatasetHandler {
 
-    public static ArrayList<String> readCsv(InputStream inputStream) {
-        StringBuilder sb = new StringBuilder();
-        InputStreamReader inputStreamReader = new InputStreamReader(inputStream, StandardCharsets.UTF_8);
-        BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
-        ArrayList<String> csvData = new ArrayList<>();
-        try {
-            String csvLine;
-            while ((csvLine = bufferedReader.readLine()) != null) {
-                sb.append(csvLine);
-                sb.append("\n");
-                csvData.add(csvLine);
-            }
-        } catch (IOException ex) {
-            throw new RuntimeException("Error in reading csv: " + ex);
-        } finally {
-            try {
-                inputStream.close();
-            } catch (IOException e) {
-                throw new RuntimeException("Error while closing csv: " + e);
-            }
-        }
-        String result = sb.toString();
-        return csvData;
-    }
+//    public static ArrayList<ArrayList<String>> readCsv(InputStream inputStream) {
+//        InputStreamReader inputStreamReader = new InputStreamReader(inputStream, StandardCharsets.UTF_8);
+//        BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
+//        ArrayList<ArrayList<String>> csvData = new ArrayList<>();
+//        String[] headers = {};
+//        try {
+//            String csvLine;
+//            while ((csvLine = bufferedReader.readLine()) != null) {
+//                csvLine.split("\\;")
+//                csvData.add(csvLine);
+//            }
+//        } catch (IOException ex) {
+//            throw new RuntimeException("Error in reading csv: " + ex);
+//        } finally {
+//            try {
+//                inputStream.close();
+//            } catch (IOException e) {
+//                throw new RuntimeException("Error while closing csv: " + e);
+//            }
+//        }
+//        return csvData;
+//    }
 
     public static Vector<String> readTextFile(InputStream inputStream) {
         StringBuilder sb = new StringBuilder();
@@ -62,7 +60,7 @@ public class DatasetHandler {
         return stopWords;
     }
 
-    public static HashMap<String, Vector<String>> readShortTextCSV(InputStream inputStream) {
+        public static HashMap<String, Vector<String>> readCSV(InputStream inputStream) {
         InputStreamReader inputStreamReader = new InputStreamReader(inputStream, StandardCharsets.UTF_8);
         BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
         HashMap<String, Vector<String>> table = new HashMap<String, Vector<String>>();

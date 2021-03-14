@@ -1,3 +1,4 @@
+include ':fasttext4j-0.2.2'
 include ':log4j-1.2.17'
 include ':guava-19.0'
 include ':commons-cli-1.4'

@@ -14,6 +14,7 @@
             <option value="$PROJECT_DIR$/app" />
             <option value="$PROJECT_DIR$/commons-cli-1.4" />
             <option value="$PROJECT_DIR$/fasttext4j-0.2.1-SNAPSHOT" />
+            <option value="$PROJECT_DIR$/fasttext4j-0.2.2" />
             <option value="$PROJECT_DIR$/guava-19.0" />
             <option value="$PROJECT_DIR$/log4j-1.2.17" />
           </set>

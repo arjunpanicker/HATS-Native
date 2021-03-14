@@ -10,10 +10,10 @@ public class LogisticRegression {
     private double learning_rate;
     private int iterations;
     private int train_len = 0, num_features = 0;
-    private Vector<Double> weights = new Vector<Double>();
+    private Vector<Double> weights = new Vector<>();
     private double bias = 0;
-    private Vector<Vector<Double>> X = new Vector<Vector<Double>>();
-    private Vector<Vector<String>> y = new Vector<Vector<String>>();
+    private Vector<Vector<Double>> X = new Vector<>();
+    private Vector<Vector<String>> y = new Vector<>();
 
     private static final String TAG_NAME = LogisticRegression.class.getName();
 
@@ -28,9 +28,9 @@ public class LogisticRegression {
         this.train_len = X.size();
         this.num_features = 150;
 
-        // Initialize the weight vector with all 0s for length = num_features
+        // Initialize the weight vector with all random in range [0,1] for length = num_features
         for (int i = 0; i < num_features; i++) {
-            this.weights.add(0d);
+            this.weights.add(Math.random());
         }
 
         this.X = X;
