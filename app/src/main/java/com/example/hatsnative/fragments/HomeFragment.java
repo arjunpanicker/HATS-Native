@@ -1,6 +1,5 @@
 package com.example.hatsnative.fragments;
 
-import android.content.DialogInterface;
 import android.content.res.AssetManager;
 import android.os.Bundle;
 import android.util.Log;
@@ -8,7 +7,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -17,27 +15,24 @@ import androidx.fragment.app.Fragment;
 
 import com.example.hatsnative.R;
 import com.example.hatsnative.helpers.CommandDialog;
+import com.example.hatsnative.helpers.Constants;
 import com.example.hatsnative.helpers.services.DatasetHandler;
+import com.example.hatsnative.helpers.services.PreprocessingHandler;
 import com.example.hatsnative.helpers.services.Utility;
 import com.example.hatsnative.helpers.services.ml.FasttextHandler;
-import com.example.hatsnative.helpers.services.PreprocessingHandler;
+import com.example.hatsnative.helpers.services.ml.net.DNN;
 import com.skyfishjy.library.RippleBackground;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Vector;
 
 public class HomeFragment extends Fragment implements CommandDialog.CommandDialogListener {
 
     private RippleBackground rippleBackground;
     private AssetManager assetManager;
-    private final String fasttextModelFileName = "ft_model.ftz";
-    private final String stopwordsFilename = "stop_words.txt";
-    private final String shorttextFilename = "sms_translations.csv";
-    private final String homeAutoDatasetFilename = "home_auto_dataset.csv";
 
 
     public HomeFragment() {
@@ -77,10 +72,10 @@ public class HomeFragment extends Fragment implements CommandDialog.CommandDialo
     public void applyText(String command) {
         assetManager = getActivity().getAssets();
         try {
-            InputStream ft_inputstream = assetManager.open(fasttextModelFileName);
-            InputStream stopwords_inputstream = assetManager.open(stopwordsFilename);
-            InputStream shorttext_inputstream = assetManager.open(shorttextFilename);
-            InputStream homedata_inputstream = assetManager.open(homeAutoDatasetFilename);
+            InputStream ft_inputstream = assetManager.open(Constants.FT_MODEL_FILE);
+            InputStream stopwords_inputstream = assetManager.open(Constants.STOP_WORDS_FILE);
+            InputStream shorttext_inputstream = assetManager.open(Constants.SHORT_TEXT_FILE);
+            InputStream homedata_inputstream = assetManager.open(Constants.MAIN_DATASET_FILE);
 
             HashMap<String, Vector<String>> dataset = DatasetHandler.readCSV(homedata_inputstream);
             Vector<Vector<Integer>> y =  Utility.OneHotEncoder(dataset.get("label"));
@@ -89,36 +84,26 @@ public class HomeFragment extends Fragment implements CommandDialog.CommandDialo
                     new PreprocessingHandler(stopwords_inputstream, shorttext_inputstream);
             String preprocessedCommand = preprocessingHandler.pipeline(command);
 
+            // Load fasttext model and create an instance of fasttext class
             FasttextHandler fasttextHandler = FasttextHandler.getInstance(ft_inputstream);
-            String prediction = fasttextHandler.getPrediction(preprocessedCommand);
 
-            List<fasttext.Vector> sentVectors = fasttextHandler.getSentenceVector(dataset.get("commands"));
+            Vector<Vector<Double>> sentVectors = fasttextHandler.getSentenceVectors(dataset.get("commands"));
+
+            // Train the neural network
+            DNN dnnObject = new DNN(Constants.inputDims, Constants.outputDims);
+            dnnObject.fit(sentVectors, y);
+
+            // Predict using neural network
+            String predictionNeuralNet = dnnObject.predict(fasttextHandler.getSentenceVector(preprocessedCommand));
             
             new AlertDialog.Builder(getActivity())
                     .setTitle("Prediction Result")
-                    .setMessage("Predicted: " + prediction)
-                    .setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int which) {
-                            Log.d("Personal", "Prediction displayed!!");
-                        }
-                    }).show();
+                    .setMessage(predictionNeuralNet)
+                    .setPositiveButton("OK", (dialog, which) -> Log.d("Personal", "Prediction displayed!!")).show();
             
         } catch (IOException ioException) {
             ioException.printStackTrace();
         }
-//        predict(command);
-//        predictClass(command);
-    }
-
-    private void predictClass(String command) {
-//        InputStream is = getResources().openRawResource(R.raw.home_auto_dataset);
-//        ArrayList<String> csvResult = DatasetHandler.readCsv(is);
-//        loadCsvData(csvResult);
-    }
-
-    private void predict(String command) {
-        String str = predictNative(command, assetManager);
-        Toast.makeText(getActivity(), str, Toast.LENGTH_SHORT).show();
     }
 
     // Native Method declarations

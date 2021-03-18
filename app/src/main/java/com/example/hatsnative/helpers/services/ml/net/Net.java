@@ -6,16 +6,29 @@ import com.example.hatsnative.models.ml.INet;
 import java.util.Vector;
 
 public class Net implements INet {
-    Vector<Vector<Neuron>> m_layers;  // m_layers[layerNum][neuronNum]
+    Vector<Vector<Neuron>> m_layers = new Vector<>();  // m_layers[layerNum][neuronNum]
     double m_error;
     double m_recentAverageError;
     double m_recentAverageSmoothingFactor = 100.0;
 
-    public Net(Vector<Integer> topology) {
+    public static Vector<Integer> topology;
+
+    private static Net instance = null;
+
+    public static Net getInstance(Vector<Integer> topology) {
+        if (instance == null) {
+            instance = new Net(topology);
+        }
+
+        return instance;
+    }
+
+    private Net(Vector<Integer> mytopology) {
+        topology = mytopology;
         int numLayers = topology.size();
 
         for(int layerNum = 0; layerNum < numLayers; ++layerNum) {
-            m_layers.add(new Vector<Neuron>());
+            m_layers.add(new Vector<>());
             int numOutputs = layerNum == numLayers - 1 ? 0 : topology.get(layerNum + 1);
 
             ENeuronType nType;
@@ -110,8 +123,8 @@ public class Net implements INet {
     }
 
     @Override
-    public Vector<Double> getResults(Vector<Double> resultVals) {
-        resultVals.clear();
+    public Vector<Double> getResults() {
+        Vector<Double> resultVals = new Vector<>();
 
         for (int n = 0; n < m_layers.lastElement().size() - 1; ++n) {
             resultVals.add(m_layers.lastElement().get(n).getOutputVal());

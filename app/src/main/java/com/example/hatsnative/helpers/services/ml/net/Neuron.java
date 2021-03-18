@@ -12,7 +12,7 @@ public class Neuron implements INeuron {
     private ENeuronType neuronType;
     private double m_gradient;
     private int m_myIndex;
-    private Vector<Connection> m_outputWeights;
+    private Vector<Connection> m_outputWeights = new Vector<>();
 
     public Neuron(int numOutputs, int myIndex, ENeuronType neuronType) {
         for (int c = 0; c < numOutputs; ++c) {

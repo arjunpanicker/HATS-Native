@@ -5,13 +5,13 @@ import com.example.hatsnative.helpers.services.ml.net.Neuron;
 import java.util.Vector;
 
 public interface INet {
-    void feedForward( Vector<Double> inputVals);
+    void feedForward(Vector<Double> inputVals);
     void backProp(Vector<Integer> targetVals);
-    Vector<Double> getResults(Vector<Double> resultVals);
+    Vector<Double> getResults();
     void getWeights(Vector<Double> weightVals);
 
     static void ouputLayerSoftmaxFunction(Vector<Neuron> outputLayer) {
-        Vector<Double> expValues = new Vector<Double>();
+        Vector<Double> expValues = new Vector<>();
         double sumExp = 0.0;
 
         for (int n = 0; n < outputLayer.size() - 1; ++n) {

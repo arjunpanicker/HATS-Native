@@ -6,7 +6,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 import java.util.Vector;
 
@@ -31,14 +30,33 @@ public class FasttextHandler {
         return instance;
     }
 
-    public List<fasttext.Vector> getSentenceVector(List<String> data) {
+    public Vector<Double> getSentenceVector(String data) {
+        List<String> command = Arrays.asList(data.split("\\s"));
+
+        return fasttextVectoDouble(model.getSentenceVector(command));
+    }
+
+    /**
+     * Calculates the sentence vectors using fasttext model and returns the same.
+     * @param data list of sentences
+     * @return A java.util.Vector of sentence vectors
+     */
+    public Vector<Vector<Double>> getSentenceVectors(List<String> data) {
         List<List<String>> commands = new ArrayList<>();
         for (String str : data) {
             commands.add(Arrays.asList(str.split("\\s")));
         }
 
         List<fasttext.Vector> sentVec = model.getSentenceVectors(commands);
-        return sentVec;
+
+        Vector<Vector<Double>> sentVectors = new Vector<>();
+        for (fasttext.Vector vec : sentVec) {
+            Vector<Double> dvec = fasttextVectoDouble(vec);
+
+            sentVectors.add(dvec);
+        }
+
+        return sentVectors;
     }
 
     /**
@@ -47,11 +65,9 @@ public class FasttextHandler {
      * @return predicted class
      */
     public static String getPrediction(String command) {
-        FastTextPrediction label = null;
-        label = model.predict(command);
+        FastTextPrediction label = model.predict(command);
 
-        String predictedLabel = labelMapper(label.label());
-        return predictedLabel;
+        return labelMapper(label.label());
     }
 
     /**
@@ -67,7 +83,21 @@ public class FasttextHandler {
 
     }
 
-    private static final String labelMapper(String label) {
+    /**
+     * Converts the Vector type from fasttext to a java.util.Vector of Double
+     * @param sentVec list of fasttext.Vector (s)
+     * @return java.util.Vector of Doubles
+     */
+    private Vector<Double> fasttextVectoDouble(fasttext.Vector sentVec) {
+        Vector<Double> dvec = new Vector<>();
+        for (int i = 0; i < sentVec.size(); i++) {
+            dvec.add((double) sentVec.at(i));
+        }
+
+        return dvec;
+    }
+
+    private static String labelMapper(String label) {
         switch (label) {
             case "__label__light_on":
                 return "light on";
