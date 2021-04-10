@@ -1,5 +1,7 @@
 <resources>
     <string name="app_name">HATS Native</string>
+    <string name="splash_text">HATS</string>
+    <string name="splash_content_text">Loading Content..</string>
     <string name="open">Open</string>
     <string name="close">Close</string>
     <string name="iv_command">Enter Command</string>

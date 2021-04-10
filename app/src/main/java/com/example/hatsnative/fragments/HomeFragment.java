@@ -16,9 +16,7 @@ import androidx.fragment.app.Fragment;
 import com.example.hatsnative.R;
 import com.example.hatsnative.helpers.CommandDialog;
 import com.example.hatsnative.helpers.Constants;
-import com.example.hatsnative.helpers.services.DatasetHandler;
 import com.example.hatsnative.helpers.services.PreprocessingHandler;
-import com.example.hatsnative.helpers.services.Utility;
 import com.example.hatsnative.helpers.services.ml.FasttextHandler;
 import com.example.hatsnative.helpers.services.ml.net.DNN;
 import com.skyfishjy.library.RippleBackground;
@@ -26,8 +24,6 @@ import com.skyfishjy.library.RippleBackground;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Vector;
 
 public class HomeFragment extends Fragment implements CommandDialog.CommandDialogListener {
 
@@ -75,10 +71,6 @@ public class HomeFragment extends Fragment implements CommandDialog.CommandDialo
             InputStream ft_inputstream = assetManager.open(Constants.FT_MODEL_FILE);
             InputStream stopwords_inputstream = assetManager.open(Constants.STOP_WORDS_FILE);
             InputStream shorttext_inputstream = assetManager.open(Constants.SHORT_TEXT_FILE);
-            InputStream homedata_inputstream = assetManager.open(Constants.MAIN_DATASET_FILE);
-
-            HashMap<String, Vector<String>> dataset = DatasetHandler.readCSV(homedata_inputstream);
-            Vector<Vector<Integer>> y =  Utility.OneHotEncoder(dataset.get("label"));
 
             PreprocessingHandler preprocessingHandler =
                     new PreprocessingHandler(stopwords_inputstream, shorttext_inputstream);
@@ -87,13 +79,8 @@ public class HomeFragment extends Fragment implements CommandDialog.CommandDialo
             // Load fasttext model and create an instance of fasttext class
             FasttextHandler fasttextHandler = FasttextHandler.getInstance(ft_inputstream);
 
-            Vector<Vector<Double>> sentVectors = fasttextHandler.getSentenceVectors(dataset.get("commands"));
-
-            // Train the neural network
-            DNN dnnObject = new DNN(Constants.inputDims, Constants.outputDims);
-            dnnObject.fit(sentVectors, y);
-
             // Predict using neural network
+            DNN dnnObject = DNN.getInstance();
             String predictionNeuralNet = dnnObject.predict(fasttextHandler.getSentenceVector(preprocessedCommand));
             
             new AlertDialog.Builder(getActivity())

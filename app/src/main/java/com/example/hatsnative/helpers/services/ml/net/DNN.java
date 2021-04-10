@@ -2,6 +2,7 @@ package com.example.hatsnative.helpers.services.ml.net;
 
 import android.util.Log;
 
+import com.example.hatsnative.helpers.Constants;
 import com.example.hatsnative.helpers.services.Utility;
 
 import java.util.Map;
@@ -12,11 +13,21 @@ public class DNN {
     private int outputDims;
     private Vector<Integer> topology = new Vector<>();
 
-    public DNN(int inputDims, int outputDims) {
+    private static DNN instance = null;
+
+    private DNN(int inputDims, int outputDims) {
         this.inputDims = inputDims;
         this.outputDims = outputDims;
         this.topology.add(inputDims);
         this.topology.add(outputDims);
+    }
+
+    public static DNN getInstance() {
+        if (instance == null) {
+            instance = new DNN(Constants.inputDims, Constants.outputDims);
+        }
+
+        return instance;
     }
 
     /**
