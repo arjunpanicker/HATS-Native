@@ -13,5 +13,6 @@ public class Constants {
     public static final String STOP_WORDS_FILE = "stop_words.txt";
     public static final String SHORT_TEXT_FILE = "sms_translations.csv";
     public static final String MAIN_DATASET_FILE = "home_auto_dataset.csv";
+    public static final String WEIGHTS_FILE = "weights.map";
 
 }

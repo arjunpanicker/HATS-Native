@@ -24,12 +24,9 @@ public class Connection implements IConnection {
         this.weight = weight;
     }
 
-    public Connection(int index) {
-        this.weight = IConnection.init_weights(EKernelWeightInitializer.GLOROT_UNIFORM);
+    public Connection(int index, Double weight) {
+        this.weight = weight != null ? weight :
+                IConnection.init_weights(EKernelWeightInitializer.GLOROT_UNIFORM);
         this.m_myIndex = index;
-    }
-
-    public String toJson() {
-        return this.m_myIndex + ": " + this.getWeight();
     }
 }

@@ -5,6 +5,10 @@ import android.util.Log;
 import com.example.hatsnative.models.ml.ENeuronType;
 import com.example.hatsnative.models.ml.INet;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -21,40 +25,48 @@ public class Net implements INet {
 
     private static Net instance = null;
 
-    public static Net getInstance(Vector<Integer> topology) {
+    public static Net getInstance(Vector<Integer> topology, JSONObject weights) {
         if (instance == null) {
-            instance = new Net(topology);
+            instance = new Net(topology, weights);
         }
 
         return instance;
     }
 
-    private Net(Vector<Integer> mytopology) {
+    private Net(Vector<Integer> mytopology, JSONObject weights) {
         topology = mytopology;
         int numLayers = topology.size();
 
-        for(int layerNum = 0; layerNum < numLayers; ++layerNum) {
-            m_layers.add(new Vector<>());
-            int numOutputs = layerNum == numLayers - 1 ? 0 : topology.get(layerNum + 1);
+        try {
+            for(int layerNum = 0; layerNum < numLayers; ++layerNum) {
+                m_layers.add(new Vector<>());
+                int numOutputs = layerNum == numLayers - 1 ? 0 : topology.get(layerNum + 1);
+                JSONObject layerWeights = weights != null && layerNum != numLayers - 1 ?
+                        (JSONObject) weights.get(String.valueOf(layerNum)) : null;
 
-            ENeuronType nType;
-            if (layerNum == 0) {
-                nType = ENeuronType.INPUT;
-            } else if (layerNum == numLayers - 1) {
-                nType = ENeuronType.OUTPUT;
-            } else {
-                nType = ENeuronType.HIDDEN;
+                ENeuronType nType;
+                if (layerNum == 0) {
+                    nType = ENeuronType.INPUT;
+                } else if (layerNum == numLayers - 1) {
+                    nType = ENeuronType.OUTPUT;
+                } else {
+                    nType = ENeuronType.HIDDEN;
+                }
+
+                // We have made a new Layer. Now, we need to add neurons to the layer.
+                // We also need to add the bias neuron to each layer
+                for (int neuronNum = 0; neuronNum <= topology.get(layerNum); ++neuronNum) {
+                    m_layers.lastElement().add(new Neuron(numOutputs, neuronNum, nType,
+                            layerWeights != null ?
+                                    (JSONArray) layerWeights.get(String.valueOf(neuronNum)) : null));
+                }
+                Log.d("NN", "Layer " + (layerNum + 1) + ": " + (topology.get(layerNum)));
+
+                // Force the bias node's output value to 1.0. It's the last neuron created above
+                m_layers.lastElement().lastElement().setOutputVal(1.0);
             }
-
-            // We have made a new Layer. Now, we need to add neurons to the layer.
-            // We also need to add the bias neuron to each layer
-            for (int neuronNum = 0; neuronNum <= topology.get(layerNum); ++neuronNum) {
-                m_layers.lastElement().add(new Neuron(numOutputs, neuronNum, nType));
-            }
-            Log.d("NN", "Layer " + (layerNum + 1) + ": " + (topology.get(layerNum)));
-
-            // Force the bias node's output value to 1.0. It's the last neuron created above
-            m_layers.lastElement().lastElement().setOutputVal(1.0);
+        } catch (JSONException e) {
+            e.printStackTrace();
         }
     }
 

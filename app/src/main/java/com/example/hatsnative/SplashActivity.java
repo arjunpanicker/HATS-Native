@@ -15,6 +15,8 @@ import com.example.hatsnative.helpers.services.Utility;
 import com.example.hatsnative.helpers.services.ml.FasttextHandler;
 import com.example.hatsnative.helpers.services.ml.net.DNN;
 
+import org.json.JSONObject;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.HashMap;
@@ -54,9 +56,13 @@ public class SplashActivity extends AppCompatActivity {
 
                 Vector<Vector<Double>> sentVectors = fasttextHandler.getSentenceVectors(dataset.get("commands"));
 
+                JSONObject weights = DatasetHandler.readWeights(App.getContext());
                 // Train the neural network
-                DNN dnnObject = DNN.getInstance();
-                dnnObject.fit(sentVectors, y);
+                DNN dnnObject = DNN.getInstance(weights);
+
+                if (weights == null) {
+                    dnnObject.fit(sentVectors, y);
+                }
 
                 return "Done";
             } catch (IOException ioException) {

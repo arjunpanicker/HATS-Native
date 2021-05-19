@@ -79,8 +79,9 @@ public class HomeFragment extends Fragment implements CommandDialog.CommandDialo
             // Load fasttext model and create an instance of fasttext class
             FasttextHandler fasttextHandler = FasttextHandler.getInstance(ft_inputstream);
 
+//            JSONObject weights = DatasetHandler.readWeights(getActivity());
             // Predict using neural network
-            DNN dnnObject = DNN.getInstance();
+            DNN dnnObject = DNN.getInstance(null);
             String predictionNeuralNet = dnnObject.predict(fasttextHandler.getSentenceVector(preprocessedCommand));
             
             new AlertDialog.Builder(getActivity())

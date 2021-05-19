@@ -3,8 +3,11 @@ package com.example.hatsnative.helpers.services.ml.net;
 import com.example.hatsnative.models.ml.ENeuronType;
 import com.example.hatsnative.models.ml.INeuron;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+
 import java.util.ArrayList;
-import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Vector;
 
 public class Neuron implements INeuron {
@@ -16,9 +19,16 @@ public class Neuron implements INeuron {
     private int m_myIndex;
     private Vector<Connection> m_outputWeights = new Vector<>();
 
-    public Neuron(int numOutputs, int myIndex, ENeuronType neuronType) {
+    public Neuron(int numOutputs, int myIndex, ENeuronType neuronType, JSONArray weights)
+            throws JSONException {
+        List<Double> weightList = new ArrayList<>();
+        if (weights != null) {
+            for(int i = 0; i < weights.length(); i++) {
+                weightList.add(weights.getDouble(i));
+            }
+        }
         for (int c = 0; c < numOutputs; ++c) {
-            m_outputWeights.add(new Connection(c));
+            m_outputWeights.add(new Connection(c, weights != null ? weightList.get(c) : null));
         }
 
         this.m_myIndex = myIndex;
@@ -100,17 +110,5 @@ public class Neuron implements INeuron {
 
     public void setNeuronType(ENeuronType neuronType) {
         this.neuronType = neuronType;
-    }
-
-    public LinkedHashMap<Integer, ArrayList<String>> toJson() {
-        LinkedHashMap<Integer, ArrayList<String>> neuronJson = new LinkedHashMap<>();
-        ArrayList<String> connections = new ArrayList<>();
-
-        for (int c = 0; c < this.m_outputWeights.size(); c++) {
-            connections.add(this.m_outputWeights.get(c).toJson());
-        }
-        neuronJson.put(m_myIndex, connections);
-
-        return neuronJson;
     }
 }
