@@ -3,6 +3,8 @@ package com.example.hatsnative.helpers.services.ml.net;
 import com.example.hatsnative.models.ml.ENeuronType;
 import com.example.hatsnative.models.ml.INeuron;
 
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.Vector;
 
 public class Neuron implements INeuron {
@@ -16,12 +18,14 @@ public class Neuron implements INeuron {
 
     public Neuron(int numOutputs, int myIndex, ENeuronType neuronType) {
         for (int c = 0; c < numOutputs; ++c) {
-            m_outputWeights.add(new Connection());
+            m_outputWeights.add(new Connection(c));
         }
 
         this.m_myIndex = myIndex;
         this.neuronType = neuronType;
     }
+
+    public Vector<Connection> getConnections() { return m_outputWeights; }
 
     @Override
     public double sumDOW(Vector<Neuron> nextLayer) {
@@ -96,5 +100,17 @@ public class Neuron implements INeuron {
 
     public void setNeuronType(ENeuronType neuronType) {
         this.neuronType = neuronType;
+    }
+
+    public LinkedHashMap<Integer, ArrayList<String>> toJson() {
+        LinkedHashMap<Integer, ArrayList<String>> neuronJson = new LinkedHashMap<>();
+        ArrayList<String> connections = new ArrayList<>();
+
+        for (int c = 0; c < this.m_outputWeights.size(); c++) {
+            connections.add(this.m_outputWeights.get(c).toJson());
+        }
+        neuronJson.put(m_myIndex, connections);
+
+        return neuronJson;
     }
 }

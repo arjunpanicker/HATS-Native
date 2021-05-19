@@ -6,6 +6,7 @@ import com.example.hatsnative.models.ml.IConnection;
 public class Connection implements IConnection {
     private double weight;
     private double deltaWeight;
+    private int m_myIndex;
 
     public double getDeltaWeight() {
         return deltaWeight;
@@ -23,7 +24,12 @@ public class Connection implements IConnection {
         this.weight = weight;
     }
 
-    public Connection() {
+    public Connection(int index) {
         this.weight = IConnection.init_weights(EKernelWeightInitializer.GLOROT_UNIFORM);
+        this.m_myIndex = index;
+    }
+
+    public String toJson() {
+        return this.m_myIndex + ": " + this.getWeight();
     }
 }

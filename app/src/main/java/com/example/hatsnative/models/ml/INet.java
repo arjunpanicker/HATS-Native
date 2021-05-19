@@ -2,13 +2,15 @@ package com.example.hatsnative.models.ml;
 
 import com.example.hatsnative.helpers.services.ml.net.Neuron;
 
+import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Vector;
 
 public interface INet {
     void feedForward(Vector<Double> inputVals);
     void backProp(Vector<Integer> targetVals);
     Vector<Double> getResults();
-    void getWeights(Vector<Double> weightVals);
+    LinkedHashMap<Integer, List<List<Double>>> getWeights();
 
     static void ouputLayerSoftmaxFunction(Vector<Neuron> outputLayer) {
         Vector<Double> expValues = new Vector<>();

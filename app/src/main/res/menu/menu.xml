@@ -1,30 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
-
-    <item
-        android:id="@+id/theme_switch"
-        android:icon="@drawable/ic_wifi_24"
-        android:title="@string/fr_wifi"
-        app:showAsAction="always"/>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <group android:checkableBehavior="single">
         <item
+            android:enabled="true"
             android:title="@string/it_home"
             android:icon="@drawable/ic_add_comment_24"
             android:id="@+id/it_home"/>
         <item
+            android:enabled="false"
             android:title="@string/it_wifi"
             android:icon="@drawable/ic_wifi_24"
-            android:id="@+id/it_wifi" />
+            android:id="@+id/it_wifi"
+            android:visible="false"/>
         <item
+            android:enabled="false"
             android:title="@string/it_dataset"
             android:icon="@drawable/ic_folder_24"
-            android:id="@+id/it_file" />
+            android:id="@+id/it_file"
+            android:visible="false"/>
         <item
+            android:enabled="false"
             android:title="@string/it_about"
             android:icon="@drawable/ic_info_24"
-            android:id="@+id/it_about" />
+            android:id="@+id/it_about"
+            android:visible="false"/>
 
     </group>
     <item android:title="">

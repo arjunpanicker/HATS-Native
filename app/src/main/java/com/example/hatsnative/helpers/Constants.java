@@ -6,6 +6,8 @@ public class Constants {
     public static final String PREFS_NAME = "prefs";
     public static final String PREF_DARK_THEME = "dark_theme";
 
+    public static final double PREDICTION_THRESHOLD = 0.75;
+
     // File names
     public static final String FT_MODEL_FILE = "ft_model.ftz";
     public static final String STOP_WORDS_FILE = "stop_words.txt";

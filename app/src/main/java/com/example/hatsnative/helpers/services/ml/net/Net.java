@@ -1,9 +1,15 @@
 package com.example.hatsnative.helpers.services.ml.net;
 
+import android.util.Log;
+
 import com.example.hatsnative.models.ml.ENeuronType;
 import com.example.hatsnative.models.ml.INet;
 
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Vector;
+import java.util.stream.Collectors;
 
 public class Net implements INet {
     Vector<Vector<Neuron>> m_layers = new Vector<>();  // m_layers[layerNum][neuronNum]
@@ -45,6 +51,7 @@ public class Net implements INet {
             for (int neuronNum = 0; neuronNum <= topology.get(layerNum); ++neuronNum) {
                 m_layers.lastElement().add(new Neuron(numOutputs, neuronNum, nType));
             }
+            Log.d("NN", "Layer " + (layerNum + 1) + ": " + (topology.get(layerNum)));
 
             // Force the bias node's output value to 1.0. It's the last neuron created above
             m_layers.lastElement().lastElement().setOutputVal(1.0);
@@ -134,16 +141,23 @@ public class Net implements INet {
     }
 
     @Override
-    public void getWeights(Vector<Double> weightVals) {
-        weightVals.clear();
+    public LinkedHashMap<Integer, List<List<Double>>> getWeights() {
+        LinkedHashMap<Integer, List<List<Double>>> weightVals = new LinkedHashMap<>();
 
         // Iterate layers
         for (int l = 0; l < m_layers.size(); ++l) {
-            // Iterate each neuron and get weights;
+            // Iterate each neuron in layer l and get weights for each connection
+            List<List<Double>> layerWeights = new ArrayList<>();
             for (int n = 0; n < m_layers.get(l).size(); ++n) {
-                // TODO: Complete the code to get the connection weights
+                Vector<Connection> connections = m_layers.get(l).get(n).getConnections();
+                List<Double> weights = connections.stream().map(connection -> connection.getWeight())
+                        .collect(Collectors.toList());
+                layerWeights.add(weights);
             }
 
+            weightVals.put(l, layerWeights);
         }
+
+        return weightVals;
     }
 }

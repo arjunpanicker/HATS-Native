@@ -5,6 +5,8 @@ import android.util.Log;
 import com.example.hatsnative.helpers.Constants;
 import com.example.hatsnative.helpers.services.Utility;
 
+import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Vector;
 
@@ -47,6 +49,9 @@ public class DNN {
                 myNet.backProp(y_train.get(j));
             }
         }
+
+        // Save the weights of the model
+        saveModelWeights(myNet);
     }
 
     /**
@@ -71,8 +76,32 @@ public class DNN {
         Vector<Integer> labelOheVec = Utility.getEmptyOHEVector();
 
         Log.d("Personal", labelOheVec.size() + " " + Utility.argmax(outputResults));
-        labelOheVec.set(Utility.argmax(outputResults), 1);
 
-        return reverseLabelMap.get(labelOheVec);
+
+        if (checkPredictionThreshold(outputResults)) {
+            labelOheVec.set(Utility.argmax(outputResults), 1);
+            return reverseLabelMap.get(labelOheVec);
+        } else {
+            return "Other";
+        }
+    }
+
+    private static boolean checkPredictionThreshold(Vector<Double> dlist) {
+        double maxVal = dlist.get(0);
+        for (int i = 1; i < dlist.size(); ++i) {
+            if (dlist.get(i) > maxVal) {
+                maxVal = dlist.get(i);
+            }
+        }
+
+        return maxVal >= Constants.PREDICTION_THRESHOLD;
+    }
+
+    /**
+     * Saves the model weights into a file to be loaded during the next app startup
+     */
+    public void saveModelWeights(Net net) {
+        LinkedHashMap<Integer, List<List<Double>>> weights = net.getWeights();
+
     }
 }
